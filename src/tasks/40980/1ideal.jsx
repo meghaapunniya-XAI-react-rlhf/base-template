@@ -100,12 +100,12 @@ const PatternDisplay = ({ pattern, currentMissingIndex, onAnswerSelect, userAnsw
           <div key={index} className="text-2xl">
             {pattern.missing.includes(index) ? (
               index === pattern.missing[currentMissingIndex] ? (
-                <span className="w-16 h-16 inline-flex items-center justify-center border-2 border-gray-300 rounded text-3xl">?</span>
+                <span className="w-12 h-16 inline-flex items-center justify-center border-2 border-gray-300 rounded text-3xl">?</span>
               ) : (
-                <span className="w-16 h-16 inline-flex items-center justify-center text-xl">{item}</span>
+                <span className="w-12 h-16 inline-flex items-center justify-center text-xl">{item}</span>
               )
             ) : (
-              <span className="w-16 h-16 inline-flex items-center justify-center text-xl">{item}</span>
+              <span className="w-12 h-16 inline-flex items-center justify-center text-xl">{item}</span>
             )}
           </div>
         ))}
@@ -146,7 +146,7 @@ export default function App() {
       handleSubmit();
     }
     return () => clearTimeout(timer);
-  }, [time, gameOver, showCorrect]);
+  }, [time, gameOver]);
 
   const handleAnswerSelect = (answer) => {
     if (!showCorrect) {
@@ -157,35 +157,44 @@ export default function App() {
   const handleSubmit = () => {
     const pattern = patterns[currentPattern];
     const correct = userAnswer === pattern.items[pattern.missing[currentMissingIndex]];
-
+  
+    // Show the correct answer
     setShowCorrect(true);
-
+  
+    // Prevent double execution of life deduction
     if (correct) {
-      setScore(score + 1);
+      setScore(score + 2);
       setFeedback("Correct!");
-    } else {
-      setLives(lives - 1);
+    } else if (lives > 0) {
+      // Deduct life only if incorrect and lives remain
+      setLives((prevLives) => prevLives - 1);
       setFeedback(userAnswer ? "Incorrect." : "Time's up!");
     }
-
+  
+    // Delay to show feedback before progressing
     setTimeout(() => {
       setFeedback(null);
       setShowCorrect(false);
+  
       if (currentMissingIndex < pattern.missing.length - 1) {
+        // Move to the next missing item in the pattern
         setCurrentMissingIndex(currentMissingIndex + 1);
       } else {
         if (currentPattern < patterns.length - 1 && lives > 0) {
+          // Move to the next pattern
           setCurrentPattern(currentPattern + 1);
           setCurrentMissingIndex(0);
         } else {
+          // End the game if no more lives or patterns
           setGameOver(true);
         }
       }
+      // Reset the user's answer and timer for the next round
       setUserAnswer(null);
       setTime(15);
     }, 2000);
   };
-
+  
   const restartGame = () => {
     setCurrentPattern(0);
     setCurrentMissingIndex(0);
