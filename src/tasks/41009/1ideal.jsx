@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { X, Menu, ArrowLeft } from "lucide-react";
 
 const BlogForm = ({ onSubmit }) => {
     const [name, setName] = useState("");
@@ -134,9 +133,9 @@ const Navbar = ({ activeTab, setActiveTab }) => {
                 <div className="sm:hidden">
                     <Button className='hover:bg-white hover:text-black' onClick={toggleMenu}>
                         {isMenuOpen ? (
-                            <X className="h-6 w-6" />
+                            <>X</>
                         ) : (
-                            <Menu className="h-6 w-6" />
+                            <>Menu</>
                         )}
                     </Button>
                 </div>
@@ -207,7 +206,7 @@ const TimelineItem = ({ experience }) => (
         <div className="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-9 h-8 mx-auto rounded-full">
             <h1 className="mx-auto font-semibold text-lg text-white">•</h1>
         </div>
-        <div className="order-1 bg-gray-100 rounded-lg shadow-xl w-[48%] px-6 py-4">
+        <div className="order-1 bg-gray-100 rounded-lg w-6/12 px-6 py-4">
             <h3 className="font-bold text-gray-800 mb-2">{experience.role}</h3>
             <p className="text-sm leading-snug tracking-wide text-gray-900">{experience.description}</p>
         </div>
@@ -284,7 +283,7 @@ const App = () => {
                         className="mb-4"
                         onClick={() => setShowForm(true)}
                     >
-                        <ArrowLeft className="mr-2 h-4 w-4" /> Back to Form
+                        Back to Form
                     </Button>
                     {activeTab === "Blog" && (
                         <Card className='bg-gray-200'>
